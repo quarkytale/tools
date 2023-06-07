@@ -32,8 +32,8 @@ echo "Install Google Chrome? [Y,n]"
 read input
 if [[ $input == "Y" || $input == "y" ]]; then
   wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-  sudo apt install -y ~/Downloads/google-chrome-stable_current_amd64.deb
-  rm ~/Downloads/google-chrome-stable_current_amd64.deb
+  sudo apt install -y ./google-chrome-stable_current_amd64.deb
+  rm google-chrome-stable_current_amd64.deb
 fi
 
 ## Terminator
