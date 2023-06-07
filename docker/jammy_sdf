@@ -1,0 +1,40 @@
+FROM ubuntu:jammy
+
+# setup timezone
+RUN echo 'Etc/UTC' > /etc/timezone && \
+    ln -s /usr/share/zoneinfo/Etc/UTC /etc/localtime && \
+    apt-get update && \
+    apt-get install -q -y --no-install-recommends tzdata && \
+    rm -rf /var/lib/apt/lists/*
+
+# install packages
+RUN apt-get update && apt-get install -q -y --no-install-recommends \
+    build-essential \
+    cmake \
+    cppcheck \
+    curl \
+    dirmngr \
+    git \
+    gnupg2 \
+    libeigen3-dev \
+    libgles2-mesa-dev \
+    lsb-release \
+    pkg-config \
+    protobuf-compiler \
+    python3-dbg \
+    python3-pip \
+    python3-scipy \
+    python3-venv \
+    qtbase5-dev \
+    ruby \
+    software-properties-common \
+    sudo \
+    wget \
+    && rm -rf /var/lib/apt/lists/*
+
+# Add ROS 2 apt repository
+# Set up keys
+RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
+# Set up sources.list
+RUN /bin/sh -c 'echo "deb [arch=amd64,arm64] http://packages.ros.org/ros2/ubuntu `lsb_release -cs` main" > /etc/apt/sources.list.d/ros2-latest.list' \
+ && /bin/sh -c 'echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null'
